@@ -2,20 +2,21 @@ package com.example.cslink.user.controller.service;
 
 import java.util.List;
 
-import com.example.cslink.user.model.dto.UserProfileDTO;
+import com.example.cslink.user.model.dto.UserProfileDto;
+import com.example.cslink.user.model.entity.UserProfile;
 
 public interface UserProfileService {
 
-    UserProfileDTO getUserProfileById(Long id);
+    UserProfileDto getUserProfileById(Long id);
 
-    UserProfileDTO validateUserProfile(UserProfileDTO userProfileDTO);
+    UserProfileDto validateUserProfile(UserProfile userProfile);
 
-    UserProfileDTO createUserProfile(UserProfileDTO userProfile);
+    UserProfileDto createUserProfile(UserProfileDto userProfile);
 
-    UserProfileDTO updateUserProfile(Long id, UserProfileDTO userProfileDetails);
+    UserProfileDto updateUserProfile(Long id, UserProfileDto userProfileDetails);
 
     void deleteUserProfile(Long id);
 
-    List<UserProfileDTO> getAllUserProfiles();
+    List<UserProfileDto> getAllUserProfiles();
 }
 

@@ -3,7 +3,7 @@ package com.example.cslink.management.reservation.controller;
 import com.example.cslink.management.reservation.controller.mappers.ReservationAssembler;
 import com.example.cslink.management.reservation.controller.service.ReservationService;
 import com.example.cslink.management.reservation.model.entity.Reservation;
-import com.example.cslink.procedure.model.dto.ReservationDTO;
+import com.example.cslink.management.reservation.model.datatypes.dto.ReservationDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -47,7 +47,7 @@ public class ReservationController {
 //    }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ReservationDTO> updateReservation(@PathVariable("id") Long id, @RequestBody ReservationDTO reservationDTO) {
+    public ResponseEntity<ReservationDto> updateReservation(@PathVariable("id") Long id, @RequestBody ReservationDto reservationDTO) {
         Reservation reservation=reservationAssembler.toReservationEntity(reservationDTO);
         reservationDTO=reservationService.updateReservation(id, reservation);
         return ResponseEntity.ok(reservationDTO);
@@ -60,14 +60,14 @@ public class ReservationController {
     }
 
     @GetMapping("/by-client/{clientId}")
-    public ResponseEntity<List<ReservationDTO>> getReservationsByClient(@PathVariable("clientId") Long clientId) {
-        List<ReservationDTO> reservations=reservationService.getReservationsByClient(clientId);
+    public ResponseEntity<List<ReservationDto>> getReservationsByClient(@PathVariable("clientId") Long clientId) {
+        List<ReservationDto> reservations=reservationService.getReservationsByClient(clientId);
         return ResponseEntity.ok(reservations);
     }
 
     @GetMapping("/by-cosmetologist/{cosmetologistId}")
-    public ResponseEntity<List<ReservationDTO>> getReservationsByCosmetologist(@PathVariable("cosmetologistId") Long cosmetologistId) {
-        List<ReservationDTO> reservations=reservationService.getReservationsByCosmetologist(cosmetologistId);
+    public ResponseEntity<List<ReservationDto>> getReservationsByCosmetologist(@PathVariable("cosmetologistId") Long cosmetologistId) {
+        List<ReservationDto> reservations=reservationService.getReservationsByCosmetologist(cosmetologistId);
         return ResponseEntity.ok(reservations);
     }
 
@@ -95,13 +95,13 @@ public class ReservationController {
 //    }
 
     @GetMapping("/reservations/{id}")
-    public ResponseEntity<ReservationDTO> getReservationById(@PathVariable Long id) {
-        ReservationDTO reservationDTO=reservationService.getReservationById(id);
+    public ResponseEntity<ReservationDto> getReservationById(@PathVariable Long id) {
+        ReservationDto reservationDTO=reservationService.getReservationById(id);
         return ResponseEntity.ok(reservationDTO);
     }
 
     @PostMapping("/reservations")
-    public ResponseEntity<ReservationDTO> createReservation(@RequestBody ReservationDTO reservationDTO) {
+    public ResponseEntity<ReservationDto> createReservation(@RequestBody ReservationDto reservationDTO) {
         Reservation reservation=reservationAssembler.toReservationEntity(reservationDTO);
         reservationDTO=reservationService.createReservation(reservation);
         return ResponseEntity.ok(reservationDTO);

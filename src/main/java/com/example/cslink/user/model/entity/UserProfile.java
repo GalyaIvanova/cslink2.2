@@ -1,22 +1,16 @@
 package com.example.cslink.user.model.entity;
 
+import com.example.cslink.tenant.model.entity.Tenant;
+import com.example.cslink.user.model.datatypes.enums.Role;
+import jakarta.persistence.*;
 import org.springframework.lang.NonNull;
 
-import com.example.cslink.user.model.datatypes.enums.Role;
-
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-
 @Entity
-@Table(name = "user_profile")
+@Table(name="user_profile")
 public class UserProfile {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
     @NonNull
     private String username;
@@ -30,12 +24,16 @@ public class UserProfile {
     @Embedded
     private Phone phone;
 
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="tenant_id")
+    private Tenant tenant;
+
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
-        this.id = id;
+        this.id=id;
     }
 
     public Role getRole() {
@@ -43,7 +41,7 @@ public class UserProfile {
     }
 
     public void setRole(Role role) {
-        this.role = role;
+        this.role=role;
     }
 
     public Phone getPhone() {
@@ -51,7 +49,7 @@ public class UserProfile {
     }
 
     public void setPhone(Phone phone) {
-        this.phone = phone;
+        this.phone=phone;
     }
 
     public String getName() {
@@ -59,7 +57,7 @@ public class UserProfile {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name=name;
     }
 
     public String getEmail() {
@@ -67,7 +65,7 @@ public class UserProfile {
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.email=email;
     }
 
     @NonNull
@@ -76,7 +74,7 @@ public class UserProfile {
     }
 
     public void setUsername(@NonNull String username) {
-        this.username = username;
+        this.username=username;
     }
 
     public String getPassword() {
@@ -84,7 +82,7 @@ public class UserProfile {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.password=password;
     }
 
     public String getToken() {
@@ -92,7 +90,7 @@ public class UserProfile {
     }
 
     public void setToken(String token) {
-        this.token = token;
+        this.token=token;
     }
 
     public String getGender() {
@@ -100,7 +98,7 @@ public class UserProfile {
     }
 
     public void setGender(String gender) {
-        this.gender = gender;
+        this.gender=gender;
     }
 }
 

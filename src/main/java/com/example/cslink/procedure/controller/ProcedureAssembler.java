@@ -2,7 +2,7 @@ package com.example.cslink.procedure.controller;
 
 import com.example.cslink.user.cosmetologist.controller.service.CosmetologistService;
 import com.example.cslink.procedure.model.Procedure;
-import com.example.cslink.procedure.model.dto.ProcedureDTO;
+import com.example.cslink.procedure.model.dto.ProcedureDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -11,8 +11,8 @@ public class ProcedureAssembler {
     @Autowired
     private CosmetologistService cosmetologistService;
 
-    public ProcedureDTO toProcedureDTO(Procedure procedure) {
-        ProcedureDTO dto=new ProcedureDTO();
+    public ProcedureDto toProcedureDTO(Procedure procedure) {
+        ProcedureDto dto=new ProcedureDto();
         dto.setId(procedure.getId());
         dto.setCosmetologistId(procedure.getCosmetologist().getId());
         dto.setName(procedure.getName());
@@ -21,7 +21,7 @@ public class ProcedureAssembler {
         return dto;
     }
 
-    public Procedure toProcedureEntity(ProcedureDTO dto) {
+    public Procedure toProcedureEntity(ProcedureDto dto) {
         Procedure procedure=new Procedure();
         procedure.setId(dto.getId());
         procedure.setCosmetologist(cosmetologistService.getCosmetologistById(dto.getCosmetologistId()));

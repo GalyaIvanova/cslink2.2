@@ -1,27 +1,28 @@
 package com.example.cslink.user.cosmetologist.controller.service;
 
-import com.example.cslink.user.cosmetologist.model.dto.CosmetologistDTO;
+import com.example.cslink.user.cosmetologist.model.dto.CosmetologistDto;
 import com.example.cslink.user.cosmetologist.model.entity.Cosmetologist;
-import com.example.cslink.procedure.model.dto.ProcedureDTO;
+import com.example.cslink.procedure.model.dto.ProcedureDto;
+import com.example.cslink.user.customer.model.dto.CustomerDto;
 
 import java.util.List;
 
 public interface CosmetologistService {
-    List<CosmetologistDTO> getAllCosmetologists();
+    List<CosmetologistDto> getAllCosmetologists();
 
     Cosmetologist getCosmetologistById(Long cosmetologistId);
 
-    CosmetologistDTO createCosmetologist(CosmetologistDTO cosmetologistDTO);
+    CosmetologistDto createCosmetologist(CosmetologistDto cosmetologistDTO);
 
-    CosmetologistDTO updateCosmetologist(Long cosmetologistId, CosmetologistDTO cosmetologistDTO);
+    CosmetologistDto updateCosmetologist(Long cosmetologistId, CosmetologistDto cosmetologistDTO);
 
     void deleteCosmetologist(Long cosmetologistId);
 
-//    List<CustomerDTO> getCustomersForCosmetologist(Long cosmetologistId);
+    List<CustomerDto> getCustomersForCosmetologist(Long cosmetologistId);
 
     void addCustomerToCosmetologist(Long cosmetologistId, Long CustomerId);
 
-    List<ProcedureDTO> getProceduresForCosmetologist(Long cosmetologistId);
+    List<ProcedureDto> getProceduresForCosmetologist(Long cosmetologistId);
 
     Cosmetologist addProcedureToCosmetologist(Long cosmetologistId, Long procedureId);
 

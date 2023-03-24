@@ -1,10 +1,10 @@
 package com.example.cslink.management.reservation.controller.mappers;
 
 import com.example.cslink.management.reservation.model.entity.Reservation;
-import com.example.cslink.procedure.model.dto.ReservationDTO;
+import com.example.cslink.management.reservation.model.datatypes.dto.ReservationDto;
 import org.springframework.stereotype.Component;
 
 @Component
 public interface ReservationMapper {
-    ReservationDTO toDTO(Reservation entity);
+    ReservationDto toDTO(Reservation entity);
 }

@@ -1,18 +1,23 @@
 package com.example.cslink.user.controller.service.impl;
 
 import com.example.cslink.exceptions.CustomResourceNotFoundException;
+import com.example.cslink.management.authentication.config.JwtTokenUtil;
 import com.example.cslink.user.controller.mappers.UserProfileMapper;
 import com.example.cslink.user.controller.service.UserProfileService;
 import com.example.cslink.user.model.dataccess.dao.UserProfileDao;
-import com.example.cslink.user.model.dataccess.persistence.UserProfilePersistence;
-import com.example.cslink.user.model.dto.UserProfileDTO;
+import com.example.cslink.user.model.dto.UserProfileDto;
 import com.example.cslink.user.model.entity.UserProfile;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class UserProfileServiceImpl implements UserProfileService {
@@ -23,65 +28,48 @@ public class UserProfileServiceImpl implements UserProfileService {
     @Autowired
     private UserProfileMapper userProfileMapper;
 
-    @Autowired
-    private UserProfilePersistence UserProfilePersistence;
-
-
-    //    @Override
-    //    public UserProfileDTO createUserProfile(UserProfile userProfile) {
-    //
-    //    }
-
-    //    @Override
-    //    public UserProfileDTO getUserProfile(Long id) {
-    //        return userProfileAssembler.toDtoModel(getUserProfileById(id));
-    //    }
-    //
-    //    @Override
-    //    public UserProfileDTO getUserProfileByUserId(Long userId) {
-    //        return userProfileAssembler.toDtoModel(userProfileRepository.findByUserId(userId));
-    //    }
-    //
-    //    @Override
-    //    public void updateUserProfile(Long id, UserProfile userProfileDetails) {
-    //        UserProfile userProfile = userProfileRepository.findById(id).orElseThrow(() -> new CustomResourceNotFoundException("UserProfile",  id));
-    //        userProfile.setName(userProfileDetails.getName());
-    //        userProfile.setPhone(userProfileDetails.getPhone());
-    ////        userProfile.setGender(userProfileDetails.getGender());
-    //        userProfileRepository.save(userProfile);
-    //    }
+    private static JwtTokenUtil jwtTokenUtil=new JwtTokenUtil();
 
     @Override
-    public UserProfileDTO getUserProfileById(Long id) {
-        UserProfile userProfile=userProfileRepository.findById(id).orElseThrow(() -> new CustomResourceNotFoundException("UserProfile", id));
+    public UserProfileDto getUserProfileById(Long id) {
+        UserProfile userProfile=userProfileRepository.findById(id)
+                .orElseThrow(() -> new CustomResourceNotFoundException("UserProfile", id));
         return userProfileMapper.toDtoModel(userProfile);
     }
 
     @Override
-    public UserProfileDTO validateUserProfile(UserProfileDTO userProfile) {
-        return userProfileMapper.toDtoModel(UserProfilePersistence.getExistingUser(userProfileMapper.toEntity(userProfile)));
+    public UserProfileDto validateUserProfile(UserProfile userProfile) {
+        Optional<UserProfile> userProfileExpected=userProfileRepository.findByUsername(userProfile.getUsername());
+
+        if (userProfileExpected.isPresent()) {
+            Set<GrantedAuthority> grantedAuthorities=new HashSet<>();
+            grantedAuthorities.add(userProfile.getRole());
+            User userDetails=new User(userProfile.getUsername(), getEncodedPassword(userProfile.getPassword()),
+                    grantedAuthorities);
+
+            if (jwtTokenUtil.validateToken(userProfile.getToken(), userDetails)) {
+                userProfile.setToken(jwtTokenUtil.generateToken(userDetails));
+            }
+        } else {
+            throw new CustomResourceNotFoundException("UserProfile" + userProfile.getUsername());
+        }
+
+        return userProfileMapper.toDtoModel(userProfile);
     }
 
     @Override
-    public UserProfileDTO createUserProfile(UserProfileDTO userProfile) {
-
+    public UserProfileDto createUserProfile(UserProfileDto userProfile) {
         UserProfile entity=userProfileMapper.toEntity(userProfile);
         entity.setPassword(getEncodedPassword(entity.getPassword()));
         return userProfileMapper.toDtoModel(userProfileRepository.save(entity));
     }
 
-    public String getEncodedPassword(String password) {
-        return passwordEncoder().encode(password);
-    }
-
     @Override
-    public UserProfileDTO updateUserProfile(Long id, UserProfileDTO userProfileDetails) {
-        UserProfile userProfile=userProfileRepository.findById(id).orElseThrow(() -> new CustomResourceNotFoundException("UserProfile", id));
-        userProfile.setName(userProfileDetails.getName());
-        userProfile.setPhone(userProfileDetails.getPhone());
-        //        userProfile.setGender(userProfileDetails.getGender());
+    public UserProfileDto updateUserProfile(Long id, UserProfileDto userProfileDetails) {
+        userProfileRepository.findById(id).orElseThrow(() -> new CustomResourceNotFoundException("UserProfile", id));
+        UserProfile userProfile=userProfileMapper.toEntity(userProfileDetails);
+        userProfile.setId(id);
         return userProfileMapper.toDtoModel(userProfileRepository.save(userProfile));
-
     }
 
     @Override
@@ -91,10 +79,13 @@ public class UserProfileServiceImpl implements UserProfileService {
     }
 
     @Override
-    public List<UserProfileDTO> getAllUserProfiles() {
+    public List<UserProfileDto> getAllUserProfiles() {
         return null;
     }
 
+    public String getEncodedPassword(String password) {
+        return passwordEncoder().encode(password);
+    }
 
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

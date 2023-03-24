@@ -1,25 +1,14 @@
 package com.example.cslink.user.cosmetologist.model.entity;
 
-import java.util.List;
-import java.util.Objects;
-
-import com.example.cslink.user.customer.model.entity.Customer;
 import com.example.cslink.management.schedule.model.entity.Availability;
 import com.example.cslink.procedure.model.Procedure;
+import com.example.cslink.user.customer.model.entity.Customer;
 import com.example.cslink.user.model.entity.UserProfile;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name="cosmetologist")
@@ -29,9 +18,11 @@ public class Cosmetologist {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
-    @JsonIgnore
     private String IBAN;
 
+    private String specialty;
+
+    private Integer yearsOfExperience;
     @OneToMany(mappedBy="cosmetologist_id", cascade=CascadeType.ALL)
     private List<Availability> availability;
 
@@ -51,7 +42,6 @@ public class Cosmetologist {
             inverseJoinColumns=@JoinColumn(name="customer_id"))
     private List<Customer> customers;
 
-//    @JsonIgnore
 //    @OneToMany(mappedBy="cosmetologist", cascade=CascadeType.ALL)
 //    private List<Transaction> transactions;
 
@@ -125,5 +115,29 @@ public class Cosmetologist {
 
     public void removeProcedure(Long procedureId) {
         this.procedures.removeIf(p -> Objects.equals(p.getId(), procedureId));
+    }
+
+    public List<Availability> getAvailability() {
+        return availability;
+    }
+
+    public void setAvailability(List<Availability> availability) {
+        this.availability=availability;
+    }
+
+    public String getSpecialty() {
+        return specialty;
+    }
+
+    public void setSpecialty(String specialty) {
+        this.specialty=specialty;
+    }
+
+    public Integer getYearsOfExperience() {
+        return yearsOfExperience;
+    }
+
+    public void setYearsOfExperience(Integer yearsOfExperience) {
+        this.yearsOfExperience=yearsOfExperience;
     }
 }

@@ -1,6 +1,8 @@
 package com.example.cslink.user.model.datatypes.enums;
 
-public enum Role {
+import org.springframework.security.core.GrantedAuthority;
+
+public enum Role implements GrantedAuthority {
     TENANT("TNT", "TENANT"),
     CUSTOMER("CST", "CUSTOMER"),
     COSMETOLOGIST("CMG", "COSMETOLOGIST");
@@ -27,4 +29,8 @@ public enum Role {
         this.name=name;
     }
 
+    @Override
+    public String getAuthority() {
+        return code;
+    }
 }

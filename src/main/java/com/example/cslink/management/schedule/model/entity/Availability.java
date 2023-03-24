@@ -18,7 +18,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-//@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"workingHours"}))
 public class Availability {
 
     @Id

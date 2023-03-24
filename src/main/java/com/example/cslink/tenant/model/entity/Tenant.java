@@ -1,32 +1,33 @@
 package com.example.cslink.tenant.model.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.example.cslink.user.model.entity.UserProfile;
+import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
-@Table(name = "tenants")
+@Table(name="tenants")
 public class Tenant {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable=false, unique=true)
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable=false)
     private String domain;
+
+    @OneToMany(mappedBy="tenant")
+    private List<UserProfile> userProfiles;
 
     public Tenant() {
     }
 
     public Tenant(String name, String domain) {
-        this.name = name;
-        this.domain = domain;
+        this.name=name;
+        this.domain=domain;
     }
 
     public Long getId() {
@@ -34,7 +35,7 @@ public class Tenant {
     }
 
     public void setId(Long id) {
-        this.id = id;
+        this.id=id;
     }
 
     public String getName() {
@@ -42,7 +43,7 @@ public class Tenant {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name=name;
     }
 
     public String getDomain() {
@@ -50,7 +51,9 @@ public class Tenant {
     }
 
     public void setDomain(String domain) {
-        this.domain = domain;
+        this.domain=domain;
     }
+
+
 }
 

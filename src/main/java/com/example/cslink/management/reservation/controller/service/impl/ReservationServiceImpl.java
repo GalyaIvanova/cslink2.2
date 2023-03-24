@@ -6,7 +6,7 @@ import com.example.cslink.management.reservation.controller.mappers.ReservationM
 import com.example.cslink.management.reservation.controller.service.ReservationService;
 import com.example.cslink.management.reservation.model.dao.ReservationDao;
 import com.example.cslink.management.reservation.model.entity.Reservation;
-import com.example.cslink.procedure.model.dto.ReservationDTO;
+import com.example.cslink.management.reservation.model.datatypes.dto.ReservationDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +24,7 @@ public class ReservationServiceImpl implements ReservationService {
     private ReservationMapper reservationMapper;
 
     @Override
-    public ReservationDTO getReservationById(Long id) {
+    public ReservationDto getReservationById(Long id) {
         Reservation reservation=reservationRepository.findById(id)
                 .orElseThrow(() -> new CustomResourceNotFoundException("Reservation", id));
         return reservationAssembler.toReservationDTO(reservation);
@@ -32,12 +32,12 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public ReservationDTO createReservation(Reservation reservation) {
+    public ReservationDto createReservation(Reservation reservation) {
         return reservationAssembler.toReservationDTO(reservationRepository.save(reservation));
     }
 
     @Override
-    public ReservationDTO updateReservation(Long id, Reservation reservation) {
+    public ReservationDto updateReservation(Long id, Reservation reservation) {
         return null;
     }
 
@@ -66,20 +66,20 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public List<ReservationDTO> getReservationsByClient(Long clientId) {
+    public List<ReservationDto> getReservationsByClient(Long clientId) {
         List<Reservation> reservations=reservationRepository.findByClientId(clientId);
         return reservationAssembler.toReservationDTOList(reservations);
 
     }
 
     @Override
-    public List<ReservationDTO> getReservationsByCosmetologist(Long cosmetologistId) {
+    public List<ReservationDto> getReservationsByCosmetologist(Long cosmetologistId) {
         List<Reservation> reservations=reservationRepository.findByCosmetologistId(cosmetologistId);
         return reservationAssembler.toReservationDTOList(reservations);
     }
 
     @Override
-    public List<ReservationDTO> getAllReservations() {
+    public List<ReservationDto> getAllReservations() {
         List<Reservation> reservations=reservationRepository.findAll();
         return reservationAssembler.toReservationDTOList(reservations);
 

@@ -1,20 +1,22 @@
 package com.example.cslink.user.cosmetologist.controller.service.impl;
 
-import com.example.cslink.user.cosmetologist.controller.mappers.impl.CosmetologistMapperImpl;
-import com.example.cslink.user.cosmetologist.controller.service.CosmetologistService;
-import com.example.cslink.user.cosmetologist.model.dataccess.dao.CosmetologistDao;
-import com.example.cslink.user.cosmetologist.model.dto.CosmetologistDTO;
-import com.example.cslink.user.cosmetologist.model.entity.Cosmetologist;
-import com.example.cslink.user.customer.controller.mappers.CustomerAssembler;
-import com.example.cslink.user.customer.model.dataccess.dao.CustomerDao;
-import com.example.cslink.user.customer.model.entity.Customer;
 import com.example.cslink.exceptions.CustomBadRequestException;
 import com.example.cslink.exceptions.CustomResourceNotFoundException;
 import com.example.cslink.management.reservation.model.dao.ReservationDao;
 import com.example.cslink.management.reservation.model.entity.Reservation;
 import com.example.cslink.procedure.model.Procedure;
-import com.example.cslink.procedure.model.ProcedureRepository;
-import com.example.cslink.procedure.model.dto.ProcedureDTO;
+import com.example.cslink.procedure.model.dao.ProcedureDao;
+import com.example.cslink.procedure.model.dto.ProcedureDto;
+import com.example.cslink.user.cosmetologist.controller.mappers.impl.CosmetologistMapperImpl;
+import com.example.cslink.user.cosmetologist.controller.service.CosmetologistService;
+import com.example.cslink.user.cosmetologist.model.dataccess.dao.CosmetologistDao;
+import com.example.cslink.user.cosmetologist.model.dataccess.persist.CosmetologistPersistence;
+import com.example.cslink.user.cosmetologist.model.dto.CosmetologistDto;
+import com.example.cslink.user.cosmetologist.model.entity.Cosmetologist;
+import com.example.cslink.user.customer.controller.mappers.CustomerAssembler;
+import com.example.cslink.user.customer.model.dataccess.dao.CustomerDao;
+import com.example.cslink.user.customer.model.dto.CustomerDto;
+import com.example.cslink.user.customer.model.entity.Customer;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,9 +31,12 @@ public class CosmetologistServiceImpl implements CosmetologistService {
     @Autowired
     private CosmetologistDao cosmetologistRepository;
     @Autowired
+    private CosmetologistPersistence cosmetologistRepositoryExtended;
+
+    @Autowired
     private ReservationDao reservationRepository;
     @Autowired
-    private ProcedureRepository procedureRepository;
+    private ProcedureDao procedureRepository;
 
     @Autowired
     private CustomerDao customerRepository;
@@ -53,7 +58,7 @@ public class CosmetologistServiceImpl implements CosmetologistService {
 //    }
 
     @Override
-    public List<CosmetologistDTO> getAllCosmetologists() {
+    public List<CosmetologistDto> getAllCosmetologists() {
         List<Cosmetologist> cosmetologists=cosmetologistRepository.findAll();
         return cosmetologists.stream()
                 .map(cosmetologistAssembler::toCosmetologistDTO)
@@ -69,17 +74,17 @@ public class CosmetologistServiceImpl implements CosmetologistService {
     }
 
     @Override
-    public CosmetologistDTO createCosmetologist(CosmetologistDTO cosmetologistDTO) {
+    public CosmetologistDto createCosmetologist(CosmetologistDto cosmetologistDTO) {
         Cosmetologist cosmetologist=cosmetologistAssembler.toCosmetologistEntity(cosmetologistDTO);
         Cosmetologist savedCosmetologist=cosmetologistRepository.save(cosmetologist);
         return cosmetologistAssembler.toCosmetologistDTO(savedCosmetologist);
     }
 
     @Override
-    public CosmetologistDTO updateCosmetologist(Long id, CosmetologistDTO cosmetologistDTO) {
+    public CosmetologistDto updateCosmetologist(Long id, CosmetologistDto cosmetologistDto) {
         Cosmetologist cosmetologist=cosmetologistRepository.findById(id)
                 .orElseThrow(() -> new CustomResourceNotFoundException("Cosmetologist", id));
-
+        cosmetologistDto.setId(id);
         Cosmetologist updatedCosmetologist=cosmetologistRepository.save(cosmetologist);
         return cosmetologistAssembler.toCosmetologistDTO(updatedCosmetologist);
     }
@@ -98,13 +103,13 @@ public class CosmetologistServiceImpl implements CosmetologistService {
         cosmetologistRepository.delete(cosmetologist);
     }
 
-//    @Override
-//    public List<CustomerDTO> getCustomersForCosmetologist(Long cosmetologistId) {
-//        List<Customer> customers=cosmetologistRepository.getCustomers(cosmetologistId);
-//        return customers.stream()
-//                .map(customerAssembler::toDtoModel)
-//                .collect(Collectors.toList());
-//    }
+    @Override
+    public List<CustomerDto> getCustomersForCosmetologist(Long cosmetologistId) {
+        List<Customer> customers=cosmetologistRepositoryExtended.getCustomersByCosmetologistId(cosmetologistId);
+        return customers.stream()
+                .map(customerAssembler::toDtoModel)
+                .collect(Collectors.toList());
+    }
 
     @Override
     public void addCustomerToCosmetologist(Long cosmetologistId, Long customerId) {
@@ -144,7 +149,7 @@ public class CosmetologistServiceImpl implements CosmetologistService {
 
     //todo
     @Override
-    public List<ProcedureDTO> getProceduresForCosmetologist(Long cosmetologistId) {
+    public List<ProcedureDto> getProceduresForCosmetologist(Long cosmetologistId) {
         Cosmetologist cosmetologist=cosmetologistRepository.findById(cosmetologistId)
                 .orElseThrow(() -> new CustomResourceNotFoundException("Cosmetologist", cosmetologistId));
         return procedureRepository.findByCosmetologists(cosmetologist);

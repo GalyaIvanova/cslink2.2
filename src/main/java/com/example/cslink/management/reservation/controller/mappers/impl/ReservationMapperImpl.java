@@ -2,14 +2,14 @@ package com.example.cslink.management.reservation.controller.mappers.impl;
 
 import com.example.cslink.management.reservation.controller.mappers.ReservationMapper;
 import com.example.cslink.management.reservation.model.entity.Reservation;
-import com.example.cslink.procedure.model.dto.ReservationDTO;
+import com.example.cslink.management.reservation.model.datatypes.dto.ReservationDto;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ReservationMapperImpl implements ReservationMapper {
     @Override
-    public ReservationDTO toDTO(Reservation entity) {
-        ReservationDTO reservationDTO=new ReservationDTO();
+    public ReservationDto toDTO(Reservation entity) {
+        ReservationDto reservationDTO=new ReservationDto();
         reservationDTO.setId(entity.getId());
 //        reservationDTO.setAppointmentTime(entity.getAppointmentTime());
         reservationDTO.setClientId(entity.getClient().getId());
