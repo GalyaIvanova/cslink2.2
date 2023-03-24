@@ -141,26 +141,21 @@ public class UserProfileServiceImplTest {
 
     @Test
     public void testDeleteUserProfile() {
-        // Arrange
         Long id=1L;
         UserProfile userProfile=new UserProfileBuilder().withId(id).build();
         when(userProfileRepository.findById(id)).thenReturn(Optional.of(userProfile));
 
-        // Act
         userProfileService.deleteUserProfile(id);
 
-        // Assert
         Mockito.verify(userProfileRepository, times(1)).findById(id);
         Mockito.verify(userProfileRepository, times(1)).delete(userProfile);
     }
 
     @Test
     public void testDeleteNonExistentUserProfile() {
-        // Arrange
         Long userId=1L;
         when(userProfileRepository.findById(userId)).thenReturn(Optional.empty());
 
-        // Act and Assert
         assertThrows(CustomResourceNotFoundException.class, () -> {
             userProfileService.deleteUserProfile(userId);
         });
