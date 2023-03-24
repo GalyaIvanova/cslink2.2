@@ -28,6 +28,23 @@ public class UserProfile {
     @JoinColumn(name="tenant_id")
     private Tenant tenant;
 
+    public UserProfile() {
+
+    }
+
+    public UserProfile(Long id, @NonNull String username, String password, String token, Role role, String name, String email, String gender, Phone phone, Tenant tenant) {
+        this.id=id;
+        this.username=username;
+        this.password=password;
+        this.token=token;
+        this.role=role;
+        this.name=name;
+        this.email=email;
+        this.gender=gender;
+        this.phone=phone;
+        this.tenant=tenant;
+    }
+
     public Long getId() {
         return id;
     }

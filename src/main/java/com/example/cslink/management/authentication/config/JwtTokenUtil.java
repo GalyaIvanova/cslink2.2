@@ -1,28 +1,32 @@
 package com.example.cslink.management.authentication.config;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import org.hibernate.validator.internal.engine.valueextraction.ValueExtractorDescriptor;
+import org.springframework.cglib.core.KeyFactory;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
+
 import java.io.Serializable;
+import java.security.Key;
+import java.security.KeyPair;
+import java.security.KeyRep;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
-
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-
 @Component
-public  class JwtTokenUtil implements Serializable {
+public class JwtTokenUtil implements Serializable {
 
 	private static final long serialVersionUID = -2550185165626007488L;
-	
+
 	public static final long JWT_TOKEN_VALIDITY = 5*60*60;
 
-	@Value("${jwt.secret}")
-	private String secret;
+	//@Value("${jwt.secret}")
+    private static final String secret="haha";
+
 
 	public String getUsernameFromToken(String token) {
 		return getClaimFromToken(token, Claims::getSubject);
@@ -63,7 +67,8 @@ public  class JwtTokenUtil implements Serializable {
 	private String doGenerateToken(Map<String, Object> claims, String subject) {
 
 		return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
-				.setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY*1000)).signWith(SignatureAlgorithm.HS512, secret).compact();
+				.setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY*1000))
+                .signWith(SignatureAlgorithm.HS512, secret).compact();
 	}
 
 	public Boolean canTokenBeRefreshed(String token) {

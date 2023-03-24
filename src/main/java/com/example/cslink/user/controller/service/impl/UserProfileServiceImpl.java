@@ -1,6 +1,7 @@
 package com.example.cslink.user.controller.service.impl;
 
 import com.example.cslink.exceptions.CustomResourceNotFoundException;
+import com.example.cslink.exceptions.ResourceAlreadyExistsException;
 import com.example.cslink.management.authentication.config.JwtTokenUtil;
 import com.example.cslink.user.controller.mappers.UserProfileMapper;
 import com.example.cslink.user.controller.service.UserProfileService;
@@ -28,7 +29,8 @@ public class UserProfileServiceImpl implements UserProfileService {
     @Autowired
     private UserProfileMapper userProfileMapper;
 
-    private static JwtTokenUtil jwtTokenUtil=new JwtTokenUtil();
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil=new JwtTokenUtil();
 
     @Override
     public UserProfileDto getUserProfileById(Long id) {
@@ -61,7 +63,13 @@ public class UserProfileServiceImpl implements UserProfileService {
     public UserProfileDto createUserProfile(UserProfileDto userProfile) {
         UserProfile entity=userProfileMapper.toEntity(userProfile);
         entity.setPassword(getEncodedPassword(entity.getPassword()));
-        return userProfileMapper.toDtoModel(userProfileRepository.save(entity));
+        Optional<UserProfile> profile=userProfileRepository.findByUsername(entity.getUsername());
+
+        if (profile.isPresent()) {
+            throw new ResourceAlreadyExistsException("User profile already exists: " + profile.get().getUsername());
+        } else {
+            return userProfileMapper.toDtoModel(userProfileRepository.save(entity));
+        }
     }
 
     @Override

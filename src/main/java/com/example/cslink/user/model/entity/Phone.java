@@ -10,6 +10,14 @@ public class Phone {
     @NonNull
     private String number;
 
+    public Phone(String countryCode, @NonNull String number) {
+        this.countryCode=countryCode;
+        this.number=number;
+    }
+
+    public Phone() {
+    }
+
     public String getCountryCode() {
         return countryCode;
     }

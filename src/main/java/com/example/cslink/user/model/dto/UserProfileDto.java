@@ -79,4 +79,11 @@ public class UserProfileDto {
     public void setGender(String gender) {
         this.gender=gender;
     }
+
+    public void setUsername(String john) {
+    }
+
+    public String getUsername() {
+        return null;
+    }
 }
