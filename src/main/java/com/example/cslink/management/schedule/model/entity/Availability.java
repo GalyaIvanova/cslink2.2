@@ -1,11 +1,12 @@
 package com.example.cslink.management.schedule.model.entity;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 import org.springframework.scheduling.annotation.Scheduled;
 
-import com.example.cslink.user.cosmetologist.model.entity.Cosmetologist;
-import com.example.cslink.management.schedule.model.ds.WorkingHours;
+import com.example.cslink.user.model.entity.Cosmetologist;
+import com.example.cslink.management.schedule.model.valueobject.WorkingHours;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
@@ -54,10 +55,23 @@ public class Availability {
     @Scheduled(fixedRate = 360000*24) // Runs every day
     public void scheduledTask() {
         System.out.println("Running scheduled task for entity with ID " + id);
-        // TODO: Add your task logic here
+        // TODO: Add logic here
         if (workingHours.getDate().isBefore(LocalDateTime.now().toLocalDate()) ){
            // entityManager.remove(this);
         }
         lastTaskRun = LocalDateTime.now();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Availability that=(Availability) o;
+        return Objects.equals(id, that.id) && Objects.equals(workingHours, that.workingHours) && Objects.equals(cosmetologist_id, that.cosmetologist_id) && Objects.equals(createdAt, that.createdAt);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, workingHours, cosmetologist_id, createdAt);
     }
 }

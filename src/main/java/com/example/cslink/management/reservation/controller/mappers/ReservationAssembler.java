@@ -1,7 +1,7 @@
 package com.example.cslink.management.reservation.controller.mappers;
 
-import com.example.cslink.user.cosmetologist.controller.service.CosmetologistService;
-import com.example.cslink.user.customer.controller.service.CustomerService;
+import com.example.cslink.user.controller.service.CosmetologistService;
+import com.example.cslink.user.controller.service.CustomerService;
 import com.example.cslink.management.reservation.model.entity.Reservation;
 import com.example.cslink.management.reservation.model.datatypes.dto.ReservationDto;
 import org.springframework.beans.factory.annotation.Autowired;

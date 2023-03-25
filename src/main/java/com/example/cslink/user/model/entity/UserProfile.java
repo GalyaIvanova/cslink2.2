@@ -5,6 +5,8 @@ import com.example.cslink.user.model.datatypes.enums.Role;
 import jakarta.persistence.*;
 import org.springframework.lang.NonNull;
 
+import java.util.Objects;
+
 @Entity
 @Table(name="user_profile")
 public class UserProfile {
@@ -15,9 +17,15 @@ public class UserProfile {
     @NonNull
     private String username;
     private String password;
+
+    @Transient
     private String token;
+
+    @NonNull
     private Role role;
     private String name;
+
+    @NonNull
     private String email;
     private String gender;
 
@@ -116,6 +124,40 @@ public class UserProfile {
 
     public void setGender(String gender) {
         this.gender=gender;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserProfile that=(UserProfile) o;
+        return id.equals(that.id)
+                && username.equals(that.username)
+                && Objects.equals(password, that.password)
+                && role == that.role
+                && Objects.equals(name, that.name)
+                && email.equals(that.email)
+                && Objects.equals(gender, that.gender)
+                && Objects.equals(phone, that.phone)
+                && Objects.equals(tenant, that.tenant);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, username, password, role, name, email, gender, phone, tenant);
+    }
+
+    @Override
+    public String toString() {
+        return "UserProfile{" +
+                "username='" + username + '\'' +
+                ", role=" + role +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", gender='" + gender + '\'' +
+                ", phone=" + phone +
+                ", tenant=" + tenant +
+                '}';
     }
 }
 

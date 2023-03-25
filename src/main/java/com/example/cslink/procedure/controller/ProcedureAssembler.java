@@ -1,6 +1,6 @@
 package com.example.cslink.procedure.controller;
 
-import com.example.cslink.user.cosmetologist.controller.service.CosmetologistService;
+import com.example.cslink.user.controller.service.CosmetologistService;
 import com.example.cslink.procedure.model.Procedure;
 import com.example.cslink.procedure.model.dto.ProcedureDto;
 import org.springframework.beans.factory.annotation.Autowired;

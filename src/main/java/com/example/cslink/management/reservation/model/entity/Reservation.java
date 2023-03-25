@@ -1,8 +1,8 @@
 package com.example.cslink.management.reservation.model.entity;
 
-import com.example.cslink.user.cosmetologist.model.entity.Cosmetologist;
-import com.example.cslink.user.customer.model.entity.Customer;
-import com.example.cslink.management.reservation.model.datatypes.ds.AppointmentTime;
+import com.example.cslink.user.model.entity.Cosmetologist;
+import com.example.cslink.user.model.entity.Customer;
+import com.example.cslink.management.reservation.model.datatypes.valueobject.AppointmentTime;
 import com.example.cslink.procedure.model.Procedure;
 
 import jakarta.persistence.Embedded;
@@ -13,6 +13,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+
+import java.util.Objects;
 
 @Entity
 public class Reservation {
@@ -73,5 +75,22 @@ public class Reservation {
 
     public void setProcedure(Procedure procedure) {
         this.procedure = procedure;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Reservation that=(Reservation) o;
+        return Objects.equals(id, that.id)
+                && Objects.equals(cosmetologist, that.cosmetologist)
+                && Objects.equals(client, that.client)
+                && Objects.equals(procedure, that.procedure)
+                && Objects.equals(appointmentTime, that.appointmentTime);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, cosmetologist, client, procedure, appointmentTime);
     }
 }

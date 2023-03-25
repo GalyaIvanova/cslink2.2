@@ -1,17 +1,10 @@
 package com.example.cslink.procedure.model;
 
+import com.example.cslink.user.model.entity.Cosmetologist;
+import jakarta.persistence.*;
+
 import java.math.BigDecimal;
-
-import com.example.cslink.user.cosmetologist.model.entity.Cosmetologist;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import java.util.Objects;
 
 @Entity
 @Table(name="procedures")
@@ -70,4 +63,34 @@ public class Procedure {
     public void setPrice(BigDecimal price) {
         this.price=price;
     }
+
+    @Override
+    public String toString() {
+        return "Procedure{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", price=" + price +
+                ", cosmetologists=" + cosmetologists +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Procedure procedure=(Procedure) o;
+        return Objects.equals(id, procedure.id)
+                && Objects.equals(name, procedure.name)
+                && Objects.equals(description, procedure.description)
+                && Objects.equals(price, procedure.price)
+                && Objects.equals(cosmetologists, procedure.cosmetologists);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, description, price, cosmetologists);
+    }
+
+
 }

@@ -1,8 +1,8 @@
 package com.example.cslink.management.schedule.controller.service.impl;
 
 import com.example.cslink.management.schedule.controller.service.ScheduleService;
-import com.example.cslink.management.schedule.model.ds.CosmetologistSchedule;
-import com.example.cslink.user.cosmetologist.model.dataccess.persist.CosmetologistPersistence;
+import com.example.cslink.management.schedule.model.valueobject.CosmetologistSchedule;
+import com.example.cslink.user.model.dataccess.persistence.CosmetologistPersistence;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

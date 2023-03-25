@@ -4,6 +4,7 @@ import com.example.cslink.user.model.entity.UserProfile;
 import jakarta.persistence.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name="tenants")
@@ -54,6 +55,44 @@ public class Tenant {
         this.domain=domain;
     }
 
+    public List<UserProfile> getUserProfiles() {
+        return userProfiles;
+    }
 
+    public void setUserProfiles(List<UserProfile> userProfiles) {
+        this.userProfiles=userProfiles;
+    }
+
+    public void addUserProfile(UserProfile userProfiles){
+        this.userProfiles.add(userProfiles);
+    }
+
+    public boolean removeUserProfile(UserProfile userProfiles){
+        return this.userProfiles.remove(userProfiles);
+    }
+
+    @Override
+    public String toString() {
+        return "Tenant{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", domain='" + domain + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Tenant tenant=(Tenant) o;
+        return id.equals(tenant.id)
+                && name.equals(tenant.name)
+                && domain.equals(tenant.domain);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, domain);
+    }
 }
 
