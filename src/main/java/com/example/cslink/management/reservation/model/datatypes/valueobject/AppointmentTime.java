@@ -8,8 +8,8 @@ import java.util.Objects;
 
 @Embeddable
 public class AppointmentTime {
-    private LocalDateTime start;
-    private LocalDateTime end;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
 
     public AppointmentTime() {
     }
@@ -18,29 +18,29 @@ public class AppointmentTime {
         //LocalDateTime start = LocalDateTime.of(2022, 3, 1, 9, 0);
         //LocalDateTime end = LocalDateTime.of(2022, 3, 1, 10, 30);
         //AppointmentTime appointmentTime = new AppointmentTime(start, end);
-        this.start=start;
-        this.end=end;
+        this.startTime=start;
+        this.endTime=end;
     }
 
 
-    public LocalDateTime getStart() {
-        return start;
+    public LocalDateTime getStartTime() {
+        return startTime;
     }
 
-    public void setStart(LocalDateTime start) {
-        this.start=start;
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime=startTime;
     }
 
-    public LocalDateTime getEnd() {
-        return end;
+    public LocalDateTime getEndTime() {
+        return endTime;
     }
 
-    public void setEnd(LocalDateTime end) {
-        this.end=end;
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime=endTime;
     }
 
     public Duration timeDuration() {
-        return Duration.between(start, end);
+        return Duration.between(startTime, endTime);
     }
 
     @Override
@@ -48,12 +48,12 @@ public class AppointmentTime {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         AppointmentTime that=(AppointmentTime) o;
-        return Objects.equals(start, that.start) && Objects.equals(end, that.end);
+        return Objects.equals(startTime, that.startTime) && Objects.equals(endTime, that.endTime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(start, end);
+        return Objects.hash(startTime, endTime);
     }
 }
 

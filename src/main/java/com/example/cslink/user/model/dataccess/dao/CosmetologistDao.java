@@ -9,6 +9,5 @@ import com.example.cslink.user.model.entity.Cosmetologist;
 @Repository
 @EnableJpaRepositories
 public interface CosmetologistDao extends JpaRepository<Cosmetologist, Long> {
-
-
+    boolean existsByIdAndProceduresId(Long id, Long id1);
 }

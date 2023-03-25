@@ -43,12 +43,49 @@ public class Availability {
         this.lastTaskRun = LocalDateTime.now();
     }
 
+    public Availability(WorkingHours workingHours) {
+        this.workingHours=workingHours;
+    }
+
     public Long getId() {
         return id;
     }
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+
+    public void setId(Long id) {
+        this.id=id;
+    }
+
+    public WorkingHours getWorkingHours() {
+        return workingHours;
+    }
+
+    public void setWorkingHours(WorkingHours workingHours) {
+        this.workingHours=workingHours;
+    }
+
+    public Cosmetologist getCosmetologist_id() {
+        return cosmetologist_id;
+    }
+
+    public void setCosmetologist_id(Cosmetologist cosmetologist_id) {
+        this.cosmetologist_id=cosmetologist_id;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt=createdAt;
+    }
+
+    public LocalDateTime getLastTaskRun() {
+        return lastTaskRun;
+    }
+
+    public void setLastTaskRun(LocalDateTime lastTaskRun) {
+        this.lastTaskRun=lastTaskRun;
     }
 
     // Add a method with the @Scheduled annotation to define the scheduled task
@@ -74,4 +111,5 @@ public class Availability {
     public int hashCode() {
         return Objects.hash(id, workingHours, cosmetologist_id, createdAt);
     }
+
 }
